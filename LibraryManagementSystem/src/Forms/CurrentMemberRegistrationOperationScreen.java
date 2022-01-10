@@ -47,7 +47,7 @@ public class CurrentMemberRegistrationOperationScreen extends JFrame {
 	private JTable table;
 	DefaultTableModel modelim = new DefaultTableModel();
 	
-	Object[] kolonlar = {"Üye No","Adý","Soyadý","TC Kimlik Numarasý","Doðum Tarihi","Mail Adresi","Cep Telefon Numarasý","Cinsiyet","Adres","Ekleyen Personel Adý","Ekleyen Personel Soyadý","Kayýt Tarihi","Son Güncellenme Tarihi"};
+	Object[] kolonlar = {"Ãœye No","AdÃ½","SoyadÃ½","TC Kimlik NumarasÃ½","DoÃ°um Tarihi","Mail Adresi","Cep Telefon NumarasÃ½","Cinsiyet","Adres","Ekleyen Personel AdÃ½","Ekleyen Personel SoyadÃ½","KayÃ½t Tarihi","Son GÃ¼ncellenme Tarihi"};
 	Object[] satirlar = new Object[13];
 	private JTextField txtCurrentMemberTC;
 	private JTextField txtMemberName;
@@ -91,31 +91,7 @@ public class CurrentMemberRegistrationOperationScreen extends JFrame {
 		});
 	}
 	
-	public void listRecordsMember(int memberNumber,String memberName,String memberSurname,String memberTC,String memberBirthDate,String memberMail,String memberPhone,String memberGender,String memberAddress) {
-		
-		try {
-			//String query = "select * from Admin";
-			Connection conn = null;
-			OraclePreparedStatement pst = null;
-			OraclePreparedStatement pst2 = null;
-			OracleResultSet rs = null;
-			conn = ConnectionClass.dbConnect();
-			
-			
-			String queryAdd = "INSERT INTO LogRecordsLibraryMember(memberID,memberName,memberSurname,TCIdentificationNumber,memberBirthDate,memberMail,memberPhoneNumber,memberGender,memberAddress) VALUES("+memberNumber+",'"+memberName+"','"+memberSurname+"','"+memberTC+"','"+memberBirthDate+"','"+memberMail+"','"+memberPhone+"','"+memberGender+"','"+memberAddress+"')";
-			pst2 = (OraclePreparedStatement) conn.prepareStatement(queryAdd);
-			int rowValue = pst2.executeUpdate();
-			
-			
-			
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			
-		}
-		
-		
-		
-	}
+	
 	
 	public OracleResultSet showMembers(String sorgu) {
 		Connection conn = null;
@@ -210,7 +186,7 @@ public void listMembers() {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//güncelleme ve silme
+				//gÃ¼ncelleme ve silme
 				
 				DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
 				memberNumber = (int) tblModel.getValueAt(table.getSelectedRow(), 0);
@@ -230,7 +206,7 @@ public void listMembers() {
 				txtMemberSurname.setText(memberSurname);
 				txtMemberTC.setText(memberTC);
 				if(memberGender.equals("K")) {
-					cmbMemberGender.setSelectedItem("Kadýn");
+					cmbMemberGender.setSelectedItem("KadÃ½n");
 					
 				}
 				else {
@@ -280,8 +256,8 @@ public void listMembers() {
 		JButton btnCurrentMemberSearch = new JButton("Ara");
 		btnCurrentMemberSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//search - üye arama
-                //Arama iþlemi
+				//search - Ã¼ye arama
+                //Arama iÃ¾lemi
 				
 				String memberTCNumber = txtCurrentMemberTC.getText();
 				if(memberTCNumber.length()!=0) {
@@ -320,7 +296,7 @@ public void listMembers() {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Aranacak üye TC alaný boþ býrakýlamaz!!! Lütfen aranacak üyenin 11 haneli TC Kimlik numarasýný giriniz!!");
+					JOptionPane.showMessageDialog(null, "Aranacak Ã¼ye TC alanÃ½ boÃ¾ bÃ½rakÃ½lamaz!!! LÃ¼tfen aranacak Ã¼yenin 11 haneli TC Kimlik numarasÃ½nÃ½ giriniz!!");
 				}
 				
 			}
@@ -470,7 +446,7 @@ public void listMembers() {
 		btnUpdateMember.setIcon(new ImageIcon("C:\\Users\\\u0130REM SAMUR\\Pictures\\istockphoto-1146313245-612x612_50x50.jpg"));
 		btnUpdateMember.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//güncelle
+				//gÃ¼ncelle
 				
 				
 				Connection conn = null;
@@ -496,7 +472,7 @@ public void listMembers() {
 				txtBirthDate.setText(currentMemberBirthDate);
 				String memberGenderValue = cmbMemberGender.getSelectedItem().toString();
 				String memberGender2="";
-				if(memberGenderValue.equals("Kadýn")) {
+				if(memberGenderValue.equals("KadÃ½n")) {
 					memberGender2="K";
 					
 					
@@ -507,7 +483,7 @@ public void listMembers() {
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Lütfen bir cinsiyet seçimi yapýnýz");
+					JOptionPane.showMessageDialog(null, "LÃ¼tfen bir cinsiyet seÃ§imi yapÃ½nÃ½z");
 					
 				}
 				
@@ -516,7 +492,7 @@ public void listMembers() {
 				
 				if(txtMemberName.getText().length()!=0 && txtMemberSurname.getText().length()!=0 && txtMemberTC.getText().length()!=0 && txtMemberMail.getText().length()!=0 && txtMemberPhoneNumber.getText().length()!=0 && cmbMemberGender.getSelectedIndex()!=-1 && txtMemberAdress.getText().length()!=0) {
 					if(txtMemberTC.getText().length()==11) {
-						int selectedOption = JOptionPane.showConfirmDialog(null, "Deðiþiklikler kaydedilsin mi ?","Üyeyi Güncelle",JOptionPane.YES_NO_OPTION);
+						int selectedOption = JOptionPane.showConfirmDialog(null, "DeÃ°iÃ¾iklikler kaydedilsin mi ?","Ãœyeyi GÃ¼ncelle",JOptionPane.YES_NO_OPTION);
 						if(selectedOption==0) {
 							try {
 								//String query = "select * from Admin";
@@ -532,7 +508,7 @@ public void listMembers() {
 								pst = (OraclePreparedStatement) conn.prepareStatement(queryUpdate);
 								int rowValue = pst.executeUpdate();
 								if(rowValue>0) {
-									JOptionPane.showMessageDialog(null, " Deðiþiklikler baþarýyla kaydedildi.");
+									JOptionPane.showMessageDialog(null, " DeÃ°iÃ¾iklikler baÃ¾arÃ½yla kaydedildi.");
 									listMembers();
 									txtMemberName.setText("");
 									txtMemberSurname.setText("");
@@ -540,7 +516,7 @@ public void listMembers() {
 									txtMemberPhoneNumber.setText("");
 									txtBirthDate.setText("");
 									txtMemberMail.setText("");
-									cmbMemberGender.setSelectedItem("--Cinsiyet Seçiniz--");
+									cmbMemberGender.setSelectedItem("--Cinsiyet SeÃ§iniz--");
 									txtMemberAdress.setText("");
 								
 									
@@ -548,7 +524,7 @@ public void listMembers() {
 									
 								}
 								else {
-									JOptionPane.showMessageDialog(null, "Deðiþiklikler kaydedilemedi!!");
+									JOptionPane.showMessageDialog(null, "DeÃ°iÃ¾iklikler kaydedilemedi!!");
 									
 								}
 								
@@ -561,11 +537,11 @@ public void listMembers() {
 						}
 						else {
 							
-							JOptionPane.showMessageDialog(null, "Güncelleme iþlemi iptal edildi.");
+							JOptionPane.showMessageDialog(null, "GÃ¼ncelleme iÃ¾lemi iptal edildi.");
 						}
 					}
 					else {
-						JOptionPane.showMessageDialog(null, "TC Kimlik numarasý 11 haneli olmalýdýr!!");
+						JOptionPane.showMessageDialog(null, "TC Kimlik numarasÃ½ 11 haneli olmalÃ½dÃ½r!!");
 					}
 					
 					
@@ -573,7 +549,7 @@ public void listMembers() {
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Tüm alanlar doldurulmalýdýr!!");
+					JOptionPane.showMessageDialog(null, "TÃ¼m alanlar doldurulmalÃ½dÃ½r!!");
 				}
 			}
 		});
@@ -599,7 +575,7 @@ public void listMembers() {
 				}
 				String memberGender2="";
 				String memberGenderValue = cmbMemberGender.getSelectedItem().toString();
-				if(memberGenderValue.equals("Kadýn")) {
+				if(memberGenderValue.equals("KadÃ½n")) {
 					memberGender2="K";
 					
 					
@@ -609,21 +585,21 @@ public void listMembers() {
 					
 					
 				}
-				listRecordsMember(memberNumber,txtMemberName.getText(),txtMemberSurname.getText(),txtMemberTC.getText(),currentMemberBirthDate,txtMemberMail.getText(),txtMemberPhoneNumber.getText(),memberGender2,txtMemberAdress.getText());
+				
 				Connection conn = null;
 				OraclePreparedStatement pst = null;
 				
 				OracleResultSet rs = null;
 				conn = ConnectionClass.dbConnect();
-				int selectedOption = JOptionPane.showConfirmDialog(null, "Seçili üyeyi silmek istediðinizden emin misiniz?","Üyeyi Sil",JOptionPane.YES_NO_OPTION);
+				int selectedOption = JOptionPane.showConfirmDialog(null, "SeÃ§ili Ã¼yeyi silmek istediÃ°inizden emin misiniz?","Ãœyeyi Sil",JOptionPane.YES_NO_OPTION);
 				if(selectedOption == 0) {
 					try {
-						//trigger silme iþlemi yapýldýktan sonra silinen üyenin log kaydýný tutuyor
+						//trigger silme iÃ¾lemi yapÃ½ldÃ½ktan sonra silinen Ã¼yenin log kaydÃ½nÃ½ tutuyor
 						String queryUpdate = "DELETE FROM LibraryMember WHERE memberID = "+memberNumber;
 						pst = (OraclePreparedStatement) conn.prepareStatement(queryUpdate);
 						int rowValue = pst.executeUpdate();
 						if(rowValue>0) {
-							JOptionPane.showMessageDialog(null, "Silme iþlemi baþarýyla gerçekleþtirildi.");
+							JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi baÃ¾arÃ½yla gerÃ§ekleÃ¾tirildi.");
 							listMembers();
 							txtMemberName.setText("");
 							txtMemberSurname.setText("");
@@ -631,7 +607,7 @@ public void listMembers() {
 							txtMemberPhoneNumber.setText("");
 							txtBirthDate.setText("");
 							txtMemberMail.setText("");
-							cmbMemberGender.setSelectedItem("--Cinsiyet Seçiniz--");
+							cmbMemberGender.setSelectedItem("--Cinsiyet SeÃ§iniz--");
 							txtMemberAdress.setText("");
 							
 							
@@ -639,7 +615,7 @@ public void listMembers() {
 							
 						}
 						else {
-							JOptionPane.showMessageDialog(null, "Silme iþlemi gerçekleþtirilemedi.");
+							JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi gerÃ§ekleÃ¾tirilemedi.");
 							
 						}
 						
@@ -651,7 +627,7 @@ public void listMembers() {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Silme iþlemi iptal edildi.");
+					JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi iptal edildi.");
 				}
 			}
 		});
@@ -671,7 +647,7 @@ public void listMembers() {
 				txtMemberPhoneNumber.setText("");
 				txtBirthDate.setText("");
 				txtMemberMail.setText("");
-				cmbMemberGender.setSelectedItem("--Cinsiyet Seçiniz--");
+				cmbMemberGender.setSelectedItem("--Cinsiyet SeÃ§iniz--");
 				txtMemberAdress.setText("");
 				
 				
