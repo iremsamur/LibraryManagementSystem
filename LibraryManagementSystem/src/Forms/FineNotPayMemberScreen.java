@@ -32,7 +32,7 @@ public class FineNotPayMemberScreen extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	DefaultTableModel modelim = new DefaultTableModel();
-	Object[] kolonlar = {"Ödemeyen No","Üye Adý","Üye Soyadý","Üye TC","Mail Adresi","Telefon Numarasý","Adres","Kitap Adý","Gecikme Gün Sayýsý","Ceza Tutarý","Ceza Tarihi"};
+	Object[] kolonlar = {"Ã–demeyen No","Ãœye AdÃ½","Ãœye SoyadÃ½","Ãœye TC","Mail Adresi","Telefon NumarasÃ½","Adres","Kitap AdÃ½","Gecikme GÃ¼n SayÃ½sÃ½","Ceza TutarÃ½","Ceza Tarihi"};
 	Object[] satirlar = new Object[11];
 	private JTextField txtSearchMemberByTC;
 
@@ -107,37 +107,7 @@ public class FineNotPayMemberScreen extends JFrame {
 		
 		
 	}
-	public void listAddNotPay(String memberName,String memberSurname,String memberTC,String memberMail,String memberPhoneNumber,String memberAddress,String bookTitle,int delayTimeDay,int fineAmount,String fineDate) {
-		try {
-			
-			Connection conn = null;
-			OraclePreparedStatement pst = null;
-			OraclePreparedStatement pst2 = null;
-			OracleResultSet rs = null;
-			boolean controlValue = false;
-			conn = ConnectionClass.dbConnect();
-			if(controlMember(memberTC)==true) {
-				controlValue = false;
-				
-			}
-			else {
-				String queryAdd = "INSERT INTO FineNotPayMembers(fineNotPayID,memberName,memberSurname,memberTC,memberMail,memberPhoneNumber,memberAddress,bookTitle,delayTimeDay,fineAmount,fineDate) VALUES(add_fine_not_pay_records.nextval,'"+memberName+"','"+memberSurname+"','"+memberTC+"','"+memberMail+"','"+memberPhoneNumber+"','"+memberAddress+"','"+bookTitle+"',"+delayTimeDay+","+fineAmount+",'"+fineDate+"')";
-				pst2 = (OraclePreparedStatement) conn.prepareStatement(queryAdd);
-				int rowValue = pst2.executeUpdate();
-				controlValue = true;
-			}
-			
-			
-			
-			
-			
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			
-			
-		}
-		
-	}
+	
 	public void deletePayFine(String memberTC) {
 		Connection conn = null;
 		OraclePreparedStatement pst = null;
@@ -145,7 +115,7 @@ public class FineNotPayMemberScreen extends JFrame {
 		OracleResultSet rs = null;
 		conn = ConnectionClass.dbConnect();
 		try {
-			//trigger silme iþlemi yapýldýktan sonra silinen üyenin log kaydýný tutuyor
+			//trigger silme iÃ¾lemi yapÃ½ldÃ½ktan sonra silinen Ã¼yenin log kaydÃ½nÃ½ tutuyor
 			String queryUpdate = "DELETE FROM FineNotPayMembers WHERE memberTC = '"+memberTC+"'";
 			pst = (OraclePreparedStatement) conn.prepareStatement(queryUpdate);
 			int rowValue = pst.executeUpdate();
@@ -159,78 +129,7 @@ public class FineNotPayMemberScreen extends JFrame {
 		}
 		
 	}
-	public void storedProcedureAddNotPayFine() {
-		
-		String sorgu = "SELECT * "+
-				"FROM Fine2,Borrowing2,LibraryMember,Book2,SystemUser "+
-				"WHERE Fine2.borrowingID = Borrowing2.borrowingID AND Borrowing2.memberID = LibraryMember.memberID AND Borrowing2.bookNumber = Book2.bookNumber AND Fine2.addedStaffNumber = SystemUser.userNumber ORDER BY Fine2.fineID ASC";
-				
-		
-		OracleResultSet rs = listTable(sorgu);
-		
-		String memberName = "";
-		String memberSurname = "";
-		String memberTC = "";
-		String memberMail = "";
-		String memberPhoneNumber = "";
-		String memberAddress = "";
-		String bookTitle = "";
-		int delayTimeDay = 0;
-		int fineAmount = 0;
-		String fineDate = "";
-		String finePaymentStatus = "";
-		
-		
-		try {
-			while(rs.next()) {
-				
-				
-				
-				memberName = rs.getString("memberName");
-				
-				memberSurname = rs.getString("memberSurname");
-				memberTC = rs.getString("TCIdentificationNumber");
-				memberMail = rs.getString("memberMail");
-				memberPhoneNumber = rs.getString("memberPhoneNumber");
-				
-				memberAddress = rs.getString("memberAddress");
-				
-				bookTitle = rs.getString("bookTitle");
-				delayTimeDay = rs.getInt("delayTimeDay");
-				fineAmount = rs.getInt("fineAmount");
-				fineDate = rs.getString("fineDate");
-				finePaymentStatus = rs.getString("finePaymentStatus");
-				if(finePaymentStatus.equals("True")) {
-					
-					listAddNotPay(memberName,memberSurname,memberTC,memberMail,memberPhoneNumber,memberAddress,bookTitle,delayTimeDay,fineAmount,fineDate);
-					
-					
-					
-				}
-				else if(finePaymentStatus.equals("False")) {
-					deletePayFine(memberTC);
-					
-					
-					
-				}
-				
-				
-				
-			
-				
-				
-				
-				
-				
-				
-			}
-			
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-			
-		}
-	}
+	
 	
 	public void listPayNotMember() {
 		String sorgu = "SELECT * FROM FineNotPayMembers";
@@ -282,7 +181,7 @@ public class FineNotPayMemberScreen extends JFrame {
 			String fineDate) {
 		
 		
-		//store procedure2ü burada yazalým çaðýralým
+		//store procedure'Ã¼ burada yazalÄ±m ve Ã§aÄŸÄ±ralÄ±m
 		
 		
 		try {
@@ -457,7 +356,7 @@ public class FineNotPayMemberScreen extends JFrame {
 		JButton btnSearchMemberTC = new JButton("Ara");
 		btnSearchMemberTC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//üye arama
+				//Ã¼ye arama
 				
 				String memberTC = txtSearchMemberByTC.getText();
 				if(memberTC.length()!=0) {
@@ -501,7 +400,7 @@ public class FineNotPayMemberScreen extends JFrame {
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Aranacak üye TC adý alaný boþ býrakýlamaz!!! Lütfen aranacak üyenin TC kimlik numarasýný giriniz!!");
+					JOptionPane.showMessageDialog(null, "Aranacak Ã¼ye TC adÃ½ alanÃ½ boÃ¾ bÃ½rakÃ½lamaz!!! LÃ¼tfen aranacak Ã¼yenin TC kimlik numarasÃ½nÃ½ giriniz!!");
 				}
 			}
 		});
@@ -514,7 +413,8 @@ public class FineNotPayMemberScreen extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				
-				storedProcedureAddNotPayFine();
+				String finePaymentStatus = "False";
+				storedProcedureAddNotPayFine(finePaymentStatus);
 				listPayNotMember();
 			}
 		});
