@@ -40,7 +40,7 @@ public class FineOperationsScreen extends JFrame {
 	private JTable table;
 	private JTextField txtSearchMemberTC;
 	DefaultTableModel modelim = new DefaultTableModel();
-	Object[] kolonlar = {"Ceza No","Adý","Soyadý","Üye TC","Mail Adresi","Telefon Numarasý","Kitap Adý","Ödünç Alma Tarihi","Teslim Tarihi","Asýl Teslim Tarihi","Ceza Tarihi","Gecikme Gün Sayýsý","Ceza Tutarý","Ceza Ödeme Durumu","Ekleyen Personel Adý","Ekleyen Personel Soyadý","Kayýt Tarihi","Son Güncellenme Tarihi"};
+	Object[] kolonlar = {"Ceza No","AdÃ½","SoyadÃ½","Ãœye TC","Mail Adresi","Telefon NumarasÃ½","Kitap AdÃ½","Ã–dÃ¼nÃ§ Alma Tarihi","Teslim Tarihi","AsÃ½l Teslim Tarihi","Ceza Tarihi","Gecikme GÃ¼n SayÃ½sÃ½","Ceza TutarÃ½","Ceza Ã–deme Durumu","Ekleyen Personel AdÃ½","Ekleyen Personel SoyadÃ½","KayÃ½t Tarihi","Son GÃ¼ncellenme Tarihi"};
 	Object[] satirlar = new Object[18];
 	
 	private JTextField txtMemberName;
@@ -250,7 +250,7 @@ public class FineOperationsScreen extends JFrame {
 		JButton btnSearch = new JButton("Ara");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Arama iþlemi
+				//Arama iÅŸlemi
 				String memberTC = txtSearchMemberTC.getText();
 				
 				String sorgu = "SELECT * "+
@@ -266,27 +266,36 @@ public class FineOperationsScreen extends JFrame {
 				try {
 					while(rs.next()) {
 						satirlar[0] = rs.getInt("fineID");
-						
-						
-						satirlar[1] = rs.getString("memberName");
-						
-						satirlar[2] = rs.getString("memberSurname");
-						satirlar[3] = rs.getString("TCIdentificationNumber");
-						satirlar[4] = rs.getDate("memberMail").toString();
-						satirlar[5] = rs.getDate("memberPhoneNumber").toString();
-						
-						satirlar[6] = rs.getString("bookTitle");
-						
-						satirlar[7] = rs.getDate("dateBorrowed").toString();
-						satirlar[8] = rs.getDate("dateReturn").toString();
-						satirlar[9] = rs.getDate("actualReturnDate").toString();
-						satirlar[10] = rs.getDate("fineDate").toString();
-						satirlar[11] = rs.getDate("delayTimeDay").toString();
-						satirlar[12] = rs.getDate("fineAmount").toString();
-						satirlar[13] = rs.getDate("name").toString();
-						satirlar[14] = rs.getDate("surname").toString();
-						satirlar[15] = rs.getDate("CreatDate").toString();
-						satirlar[16] = rs.getDate("lastUpdateDate").toString();
+				
+				
+				satirlar[1] = rs.getString("memberName");
+				
+				satirlar[2] = rs.getString("memberSurname");
+				satirlar[3] = rs.getString("TCIdentificationNumber");
+				satirlar[4] = rs.getString("memberMail");
+				satirlar[5] = rs.getString("memberPhoneNumber");
+				
+				satirlar[6] = rs.getString("bookTitle");
+				
+				satirlar[7] = rs.getDate("dateBorrowed").toString();
+				satirlar[8] = rs.getDate("dateReturn").toString();
+				satirlar[9] = rs.getDate("actualReturnDate").toString();
+				satirlar[10] = rs.getString("fineDate");
+				satirlar[11] = String.valueOf(rs.getInt("delayTimeDay"));
+				satirlar[12] = String.valueOf(rs.getInt("fineAmount"));
+				if(rs.getString("finePaymentStatus").equals("True")) {
+					satirlar[13] = "Aktif";
+				}
+				else if(rs.getString("finePaymentStatus").equals("False")) {
+					satirlar[13] = "Pasif";
+				}
+				satirlar[14] = rs.getString("name");
+				satirlar[15] = rs.getString("surname");
+				satirlar[16] = rs.getString("CreatDate");
+				satirlar[17] = rs.getString("lastUpdateDate");
+				
+				
+			
 						
 						
 					
@@ -496,7 +505,7 @@ public class FineOperationsScreen extends JFrame {
 				
 				OracleResultSet rs = null;
 				conn = ConnectionClass.dbConnect();
-				int selectedOption = JOptionPane.showConfirmDialog(null, "Pasif olan cezalarý silmek istediðinizden emin misiniz?","Ceza Sil",JOptionPane.YES_NO_OPTION);
+				int selectedOption = JOptionPane.showConfirmDialog(null, "Pasif olan cezalarÃ½ silmek istediÃ°inizden emin misiniz?","Ceza Sil",JOptionPane.YES_NO_OPTION);
 				if(selectedOption == 0) {
 					try {
 						
@@ -504,7 +513,7 @@ public class FineOperationsScreen extends JFrame {
 						pst = (OraclePreparedStatement) conn.prepareStatement(queryUpdate);
 						int rowValue = pst.executeUpdate();
 						if(rowValue>0) {
-							JOptionPane.showMessageDialog(null, "Silme iþlemi baþarýyla gerçekleþtirildi.");
+							JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi baÃ¾arÃ½yla gerÃ§ekleÃ¾tirildi.");
 							listFines();
 							txtMemberName.setText("");
 							txtMemberSurname.setText("");
@@ -525,7 +534,7 @@ public class FineOperationsScreen extends JFrame {
 							
 						}
 						else {
-							JOptionPane.showMessageDialog(null, "Silme iþlemi gerçekleþtirilemedi.");
+							JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi gerÃ§ekleÃ¾tirilemedi.");
 							
 						}
 						
@@ -537,7 +546,7 @@ public class FineOperationsScreen extends JFrame {
 					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Silme iþlemi iptal edildi.");
+					JOptionPane.showMessageDialog(null, "Silme iÃ¾lemi iptal edildi.");
 				}
 			}
 		});
@@ -595,13 +604,13 @@ public class FineOperationsScreen extends JFrame {
 				
 				OracleResultSet rs = null;
 				conn = ConnectionClass.dbConnect();
-				//ceza ödeme onayý
+				//ceza Ã¶deme onayÃ½
 				
 				
 				
 if(fineNumber>=1) {
 					
-					//iade iþlemi burada yazýlacak
+					//iade iÃ¾lemi burada yazÃ½lacak
 					
 					if(chckBoxFinePaymentConfirm.isSelected()==true) {
 						try {
@@ -610,7 +619,7 @@ if(fineNumber>=1) {
 							pst = (OraclePreparedStatement) conn.prepareStatement(queryUpdate);
 							int rowValue = pst.executeUpdate();
 							if(rowValue>0) {
-								JOptionPane.showMessageDialog(null, "Ceza Ödeme baþarýyla yapýldý.");
+								JOptionPane.showMessageDialog(null, "Ceza Ã–deme baÃ¾arÃ½yla yapÃ½ldÃ½.");
 								listFines();
 								
 								
@@ -624,7 +633,7 @@ if(fineNumber>=1) {
 								
 							}
 							else {
-								JOptionPane.showMessageDialog(null, "Ceza ödeme yapýlamadý!!");
+								JOptionPane.showMessageDialog(null, "Ceza Ã¶deme yapÃ½lamadÃ½!!");
 								
 							}
 							
@@ -636,7 +645,7 @@ if(fineNumber>=1) {
 						}
 					}
 					else {
-						JOptionPane.showMessageDialog(null, "Ceza ödeme yapýlamadý!!");
+						JOptionPane.showMessageDialog(null, "Ceza Ã¶deme yapÃ½lamadÃ½!!");
 					}
 					
 					
@@ -644,7 +653,7 @@ if(fineNumber>=1) {
 					
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Lütfen geç getirme cezasý ödenecek olan üyeyi tablodan seçiniz!!");
+					JOptionPane.showMessageDialog(null, "LÃ¼tfen geÃ§ getirme cezasÃ½ Ã¶denecek olan Ã¼yeyi tablodan seÃ§iniz!!");
 				}
 				
 			}
